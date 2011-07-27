@@ -1,10 +1,10 @@
+import re
 
 
 class Proclaim(object):
-
     def __init__(self, redis):
         self.redis = redis
-        self.groups = { "all": [] }
+        self.groups = {"all": []}
 
     def activate_group(self, feature, group):
         if group in self.groups:
@@ -44,6 +44,14 @@ class Proclaim(object):
     def deactivate_percentage(self, feature, percentage):
         self.redis.delete(_percentage_key(feature), percentage)
 
+    def features(self):
+        features = set()
+        for feature in self.redis.keys('feature:*'):
+            match = re.match(r'^feature:([-_\w]+)', feature)
+            if match:
+                features.add(match.group(1))
+        return list(features)
+
     def _user_in_active_group(self, feature, user):
         if self.redis.exists(_group_key(feature)):
             active_groups = self.redis.smembers(_group_key(feature))
@@ -65,15 +73,18 @@ class Proclaim(object):
                 return True
         return False
 
+
 def _key(name):
     return "feature:%s" % name
+
 
 def _group_key(name):
     return "%s:groups" % (_key(name))
 
+
 def _user_key(name):
     return "%s:users" % (_key(name))
 
+
 def _percentage_key(name):
     return "%s:percentage" % (_key(name))
-

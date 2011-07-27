@@ -17,8 +17,9 @@ setup(
     url="http://github.com/asenchi/proclaim",
     download_url="http://github.com/asenchi/proclaim/downloads",
     keywords="redis rollout",
-    classifiers = [
-        "Development Status :: 5 - Alpha",
+    requires=['redis'],
+    classifiers=[
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "Intended Audience :: Web Developers",
         "License :: OSI Approved :: MIT License",

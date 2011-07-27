@@ -3,16 +3,18 @@ import unittest
 
 from proclaim import Proclaim
 
+
 class User(object):
     def __init__(self, **entries):
         self.__dict__.update(entries)
+
 
 jim = User(id=1, username='jim@test.com')
 bob = User(id=23, username='bob@test.com')
 joan = User(id=40, username='joan@test.com')
 
-class TestProclaim(unittest.TestCase):
 
+class TestProclaim(unittest.TestCase):
     def setUp(self):
         self.redis = redis.Redis(host='localhost', port=6379)
         self.proclaim = Proclaim(self.redis)
